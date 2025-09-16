@@ -1,45 +1,43 @@
 import React from "react";
 import { Card, Layout, Button } from "antd";
+import { type CartItem } from "../context/CartContext";
+import { useCart } from "../context/CartContext";
 
 const { Content } = Layout;
 
-const cart: React.FC = () => {
+const Cart: React.FC = () => {
+  const [cartItem, setCartItem] = React.useState<CartItem[]>([]);
+  const { usdToInr } = useCart();
+
   return (
     <>
       <Content>
         <h1>Your Cart</h1>
         <Card style={{ marginBottom: "20px" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Product Name</th>
-                <th>Quantity</th>
-                <th>Unit Price</th>
-                <th>Total</th>
-                <th></th>
-              </tr>
-            </thead>
-
-            <tbody style={{ textAlign: "center" }}>
-              <tr key="item1" className="cart-item hover:bg-gray-100 h-20">
-                <td>
-                  <img src="#" alt="item1" />
-                </td>
-                <td>Shirt</td>
-                <td>2</td>
-                <td>$20.00</td>
-                <td>$40.00</td>
-                <td>
-                  <Button type="primary">Remove</Button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          {cartItem.length > 0 ? (
+            cartItem.map((item) => (
+              <div key={item.id} className="mb-4 flex items-center gap-4">
+                <h2>{item.title}</h2>
+                <p>Price: {usdToInr(item.price)}</p>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setCartItem(cartItem.filter((i) => i.id !== item.id));
+                  }}
+                >
+                  Remove
+                </Button>
+              </div>
+            ))
+          ) : (
+            <p className="text-center font-bold text-2xl">
+              Your cart is empty..!!
+            </p>
+          )}
         </Card>
       </Content>
     </>
   );
 };
 
-export default cart;
+export default Cart;
