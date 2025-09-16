@@ -24,7 +24,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const usdToInr = (usd: number) => {
-    const rate = 83; // approx conversion rate
+    const rate = 88.28; // approx conversion rate
     return new Intl.NumberFormat("en-IN", {
       style: "currency",
       currency: "INR",

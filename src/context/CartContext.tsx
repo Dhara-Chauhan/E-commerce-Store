@@ -9,6 +9,7 @@ export interface CartItem {
   description: string;
   image: string;
   quantity: number;
+  rating?: { rate: number; count: number };
 }
 
 // functions/things of cart which are use in it
