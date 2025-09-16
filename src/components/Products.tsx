@@ -1,6 +1,7 @@
 import { Button, Spin } from "antd";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Card from "antd/es/card/Card";
+import Meta from "antd/es/card/Meta";
 import React, { useState, useEffect } from "react";
 import { useCart } from "../context/CartContext";
 import { type CartItem } from "../context/CartContext";
@@ -31,21 +32,43 @@ const Products: React.FC = () => {
       {loading && <Spin style={{ margin: 24 }} />}
       <div className="grid gap-4 p-2 pt-0 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {Products.map((item) => (
-          <Card key={item.id}>
-            <h1 className="text-xl">{item.title}</h1>
-            <img src={item.image} alt={item.title}></img>
-            <p className="text-bold text-2xl text-green-700">
-              {usdToInr(item.price)}
-            </p>
-            <p>{item.category}</p>
-            <p>{item.description}</p>
-            <Button
-              type="primary"
-              shape="round"
-              onClick={() => addToCart(item)}
-            >
-              Add to Cart
-            </Button>
+          <Card
+            key={item.id}
+            hoverable
+            className="transition-shadow duration-300 hover:shadow-xl"
+            cover={
+              <img
+                alt={item.title}
+                src={item.image}
+                className="h-48 object-contain p-4"
+              />
+            }
+            actions={[
+              <Button
+                type="primary"
+                shape="round"
+                onClick={() => addToCart(item)}
+              >
+                Add to Cart
+              </Button>,
+              <Link to={`/products/${item.id}`}>
+                <Button shape="round">View Details</Button>
+              </Link>,
+            ]}
+          >
+            <Meta
+              title={
+                <span className="text-base font-semibold">{item.title}</span>
+              }
+              description={
+                <div className="flex flex-col gap-1">
+                  <p className="text-lg font-bold text-green-600">
+                    {usdToInr(item.price)}
+                  </p>
+                  <p className="text-sm text-gray-500">{item.category}</p>
+                </div>
+              }
+            />
           </Card>
         ))}
       </div>
