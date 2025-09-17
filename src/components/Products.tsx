@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Card from "antd/es/card/Card";
 import Meta from "antd/es/card/Meta";
 import React, { useState, useEffect } from "react";
+import { StarFilled, StarOutlined } from "@ant-design/icons";
 import { useCart } from "../context/CartContext";
 import { type CartItem } from "../context/CartContext";
 
@@ -15,9 +16,9 @@ const Products: React.FC = () => {
   useEffect(() => {
     const fetchproducts = async () => {
       try {
-        const res = await fetch("https://fakestoreapi.com/products");
+        const res = await fetch("https://dummyJSON.com/products?limit=195");
         const data = await res.json();
-        setProducts(data);
+        setProducts(data.products);
         setLoading(false);
       } catch {
         console.error("Error fetching products:", Error);
@@ -39,8 +40,8 @@ const Products: React.FC = () => {
             cover={
               <img
                 alt={item.title}
-                src={item.image}
-                className="h-48 object-contain p-4"
+                src={item.thumbnail}
+                className="h-48 object-contain p-4 hover:scale-125 transition-transform duration-300"
               />
             }
             actions={[
@@ -66,6 +67,24 @@ const Products: React.FC = () => {
                     {usdToInr(item.price)}
                   </p>
                   <p className="text-sm text-gray-500">{item.category}</p>
+                  <p className="text-gray-700 mb-6">
+                    <span className="font-semibold">
+                      {Array.from({ length: 5 }, (_, i) =>
+                        i < Math.round(item.rating || 0) ? (
+                          <StarFilled
+                            style={{ color: "#DE7921" }}
+                            key={i}
+                            className="text-yellow-500 text-lg"
+                          />
+                        ) : (
+                          <StarOutlined
+                            key={i}
+                            className="text-gray-400 text-lg"
+                          />
+                        )
+                      )}
+                    </span>
+                  </p>
                 </div>
               }
             />
