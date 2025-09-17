@@ -7,9 +7,24 @@ export interface CartItem {
   price: number;
   category: string;
   description: string;
-  image: string;
+  rating: number;
   quantity: number;
-  rating?: { rate: number; count: number };
+  images?: string[];
+  thumbnail: string;
+  discountPercentage?: number;
+  stock?: number;
+  brand?: string;
+  tags?: string[];
+  reviews?: {
+    rating: number;
+    comment: string;
+    date: string;
+    reviewerName: string;
+  }[];
+  shippingInformation?: string;
+  availabilityStatus?: string;
+  returnPolicy?: string;
+  warrantyInformation?: string;
 }
 
 // functions/things of cart which are use in it
