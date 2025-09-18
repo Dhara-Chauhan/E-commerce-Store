@@ -1,0 +1,16 @@
+import { createContext, useContext } from "react";
+
+// functions/things of cart which are use in it
+export interface CartItemType {
+  usdToInr: (usd: number) => string;
+}
+
+export const AppContext = createContext<CartItemType | undefined>(undefined);
+
+// custom hook for useContext
+
+export const useApp = () => {
+  const context = useContext(AppContext);
+  if (!context) throw Error("useApp must be in AppProvider");
+  return context;
+};

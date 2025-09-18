@@ -3,19 +3,40 @@ import { useState, useEffect } from "react";
 import { Button, Spin } from "antd";
 import { useParams } from "react-router-dom";
 import Card from "antd/es/card/Card";
-import { useCart, type CartItem } from "../context/CartContext";
 import { StarFilled, StarOutlined } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
+import { type CartItem } from "../featues/cart/cartSlice";
+import { addToCart } from "../featues/cart/cartSlice";
 
 const ProductDetails: React.FC = () => {
-  const { addToCart, usdToInr } = useCart();
+  const dispatch = useDispatch();
+
+  const AddToCart = (item: CartItem) => {
+    dispatch(addToCart(item));
+  };
+
+  const UpdateQuantity = (type: "inc" | "dec") => {
+    setQuantity((prev) => {
+      if (type === "inc") return prev + 1;
+      if (type === "dec" && prev > 1) return prev - 1;
+      return prev;
+    });
+  };
+
+  const usdToInr = (usd: number) => {
+    const rate = 88.28; // approx conversion rate
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+    }).format(usd * rate);
+  };
 
   const { id } = useParams();
   console.log("Product ID from URL:", id);
 
-  const [quantity, setQuantity] = useState(1);
-
   const [product, setProduct] = useState<CartItem | null>(null);
   const [loading, setLoading] = useState(true);
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     const fetchproductDetails = async () => {
@@ -61,7 +82,7 @@ const ProductDetails: React.FC = () => {
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                     <p className="text-2xl sm:text-3xl md:text-4xl text-green-600 font-semibold hover:scale-103 transition-transform duration-500">
                       {usdToInr(product.price)}
-                      <span className="text-sm text-[#db3964] font-normal ml-3">
+                      <span className="text-sm text-[#db3964] font-normal ml-2">
                         🔻{product.discountPercentage}% off
                       </span>
                     </p>
@@ -70,14 +91,14 @@ const ProductDetails: React.FC = () => {
                     <div className="flex items-center border rounded">
                       <button
                         className="px-3 py-1 text-lg font-bold"
-                        onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                        onClick={() => UpdateQuantity("dec")}
                       >
                         -
                       </button>
-                      <span className="px-4">{quantity}</span>
+                      <span className="font-semibold">{quantity}</span>
                       <button
                         className="px-3 py-1 text-lg font-bold"
-                        onClick={() => setQuantity((q) => q + 1)}
+                        onClick={() => UpdateQuantity("inc")}
                       >
                         +
                       </button>
@@ -87,7 +108,7 @@ const ProductDetails: React.FC = () => {
                       size="large"
                       shape="default"
                       disabled={!product.stock}
-                      onClick={() => addToCart(product)}
+                      onClick={() => AddToCart({ ...product, quantity })}
                     >
                       Add to Cart
                     </Button>
@@ -143,7 +164,9 @@ const ProductDetails: React.FC = () => {
                   </p>
                 </div>
                 <p className="text-gray-700 mb-6"></p>
-                <p className="text-gray-700 mb-6">{product.description}</p>
+                <p className="text-gray-700 mb-6 max-w-xl">
+                  {product.description}
+                </p>
                 <p>
                   <span className="font-semibold">More Details: </span>
                   <ul className="list-disc list-inside">
