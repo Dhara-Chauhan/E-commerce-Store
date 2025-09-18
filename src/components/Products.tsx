@@ -4,11 +4,18 @@ import Card from "antd/es/card/Card";
 import Meta from "antd/es/card/Meta";
 import React, { useState, useEffect } from "react";
 import { StarFilled, StarOutlined } from "@ant-design/icons";
-import { useCart } from "../context/CartContext";
-import { type CartItem } from "../context/CartContext";
+import { useApp } from "../context/AppContext";
+import { type CartItem } from "../featues/cart/cartSlice";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../featues/cart/cartSlice";
 
 const Products: React.FC = () => {
-  const { addToCart, usdToInr } = useCart();
+  const { usdToInr } = useApp();
+
+  const dispatch = useDispatch();
+  const AddToCart = (item: CartItem) => {
+    dispatch(addToCart(item));
+  };
 
   const [Products, setProducts] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -48,7 +55,7 @@ const Products: React.FC = () => {
               <Button
                 type="primary"
                 shape="round"
-                onClick={() => addToCart(item)}
+                onClick={() => AddToCart(item)}
               >
                 Add to Cart
               </Button>,

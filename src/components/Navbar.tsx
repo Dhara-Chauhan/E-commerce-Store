@@ -16,7 +16,7 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <Header className="flex items-center justify-between">
+      <Header className="flex items-center justify-between fixed top-0 z-10 w-full px-4 md:px-8 lg:px-16">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold pt-2">
             <Link to="/">E-Store</Link>
