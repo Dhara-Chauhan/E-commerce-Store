@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { AppContext } from "./AppContext";
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -12,9 +12,19 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     }).format(usd * rate);
   };
 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const login = () => {
+    setIsAuthenticated(true);
+  };
+  const logout = () => {
+    setIsAuthenticated(false);
+  };
+
   return (
     <>
-      <AppContext.Provider value={{ usdToInr }}>{children}</AppContext.Provider>
+      <AppContext.Provider value={{ usdToInr, login, logout, isAuthenticated }}>
+        {children}
+      </AppContext.Provider>
     </>
   );
 };

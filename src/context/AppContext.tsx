@@ -3,6 +3,9 @@ import { createContext, useContext } from "react";
 // functions/things of cart which are use in it
 export interface CartItemType {
   usdToInr: (usd: number) => string;
+  isAuthenticated: boolean;
+  login: () => void;
+  logout: () => void;
 }
 
 export const AppContext = createContext<CartItemType | undefined>(undefined);
