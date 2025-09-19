@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Layout, Dropdown } from "antd";
 import type { MenuProps } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+import { DownOutlined, UserOutlined } from "@ant-design/icons";
 const { Header } = Layout;
 
 const Navbar: React.FC = () => {
@@ -16,9 +16,9 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <Header className="flex items-center justify-between fixed top-0 z-10 w-full px-4 md:px-8 lg:px-16">
+      <Header className="flex items-center justify-between fixed top-0 z-10 w-full px-1 md:px-8 lg:px-16">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold pt-2">
+          <h1 className="text-xl sm:text-xs md:text-3xl font-bold pt-2 pl-0">
             <Link to="/">E-Store</Link>
           </h1>
         </div>
@@ -27,18 +27,19 @@ const Navbar: React.FC = () => {
             <Dropdown menu={{ items }} trigger={["click"]}>
               <a
                 onClick={(e) => e.preventDefault()}
-                className="text-lg cursor-pointer flex items-center gap-1"
+                className="text-lg cursor-pointer flex items-center gap-0.5"
               >
                 Categories <DownOutlined className="text-sm pt-1" />
               </a>
             </Dropdown>
           </div>
           <div className="flex justify-center text-lg sm:gap-2">
-            <Link to="/shop" className="pr-1">
-              Products
-            </Link>
-            <Link to="/cart" className="pl-1">
+            <Link to="/shop">Products</Link>
+            <Link to="/cart" className="pl-2">
               Cart
+            </Link>
+            <Link to="/login" className="pl-2">
+              <UserOutlined />
             </Link>
           </div>
         </div>

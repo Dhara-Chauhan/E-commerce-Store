@@ -1,11 +1,13 @@
 import "./App.css";
 import Navbar from "./components/Navbar";
-import Home from "./components/Home";
-import Products from "./components/Products";
-import ProductDetails from "./components/ProductDetails";
-import Cart from "./components/Cart";
+import Home from "./pages/Home";
+import Products from "./pages/Products";
+import ProductDetails from "./pages/ProductDetails";
+import Cart from "./pages/Cart";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "antd/es/layout/layout";
+import Login from "./components/Login";
+import LayoutWrapper from "./components/LayoutWrapper";
 
 function App() {
   return (
@@ -14,10 +16,46 @@ function App() {
         <Layout>
           <Navbar />
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/shop" element={<Products />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/products/:id" element={<ProductDetails />} />
+            <Route
+              path="/"
+              element={
+                <LayoutWrapper>
+                  <Home />
+                </LayoutWrapper>
+              }
+            />
+            <Route
+              path="/shop"
+              element={
+                <LayoutWrapper>
+                  <Products />
+                </LayoutWrapper>
+              }
+            />
+            <Route
+              path="/cart"
+              element={
+                <LayoutWrapper>
+                  <Cart />
+                </LayoutWrapper>
+              }
+            />
+            <Route
+              path="/products/:id"
+              element={
+                <LayoutWrapper>
+                  <ProductDetails />
+                </LayoutWrapper>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <LayoutWrapper>
+                  <Login />
+                </LayoutWrapper>
+              }
+            />
           </Routes>
         </Layout>
       </Router>

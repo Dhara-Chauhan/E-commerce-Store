@@ -3,24 +3,19 @@ import { useState, useEffect } from "react";
 import { Button, Spin } from "antd";
 import { useParams } from "react-router-dom";
 import Card from "antd/es/card/Card";
-import { StarFilled, StarOutlined } from "@ant-design/icons";
+// import { StarFilled, StarOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 import { type CartItem } from "../featues/cart/cartSlice";
 import { addToCart } from "../featues/cart/cartSlice";
+import RatingStars from "../components/RatingStars";
+import QuantityBtn from "../components/QuantityBtn";
+import StockStatus from "../components/StockStatus";
 
 const ProductDetails: React.FC = () => {
   const dispatch = useDispatch();
 
   const AddToCart = (item: CartItem) => {
     dispatch(addToCart(item));
-  };
-
-  const UpdateQuantity = (type: "inc" | "dec") => {
-    setQuantity((prev) => {
-      if (type === "inc") return prev + 1;
-      if (type === "dec" && prev > 1) return prev - 1;
-      return prev;
-    });
   };
 
   const usdToInr = (usd: number) => {
@@ -88,80 +83,31 @@ const ProductDetails: React.FC = () => {
                     </p>
                   </div>
                   <div className="flex flex-wrap md:flex-nowrap items-center gap-2">
-                    <div className="flex items-center border rounded">
-                      <button
-                        className="px-3 py-1 text-lg font-bold"
-                        onClick={() => UpdateQuantity("dec")}
-                      >
-                        -
-                      </button>
-                      <span className="font-semibold">{quantity}</span>
-                      <button
-                        className="px-3 py-1 text-lg font-bold"
-                        onClick={() => UpdateQuantity("inc")}
-                      >
-                        +
-                      </button>
-                    </div>
+                    <QuantityBtn value={quantity} onChange={setQuantity} />
                     <Button
                       type="primary"
                       size="large"
                       shape="default"
                       disabled={!product.stock}
                       onClick={() => AddToCart({ ...product, quantity })}
+                      onClickCapture={() => alert("Added to Cart")}
                     >
                       Add to Cart
                     </Button>
                   </div>
                 </div>
-
-                <div className="flex items-center gap-2">
-                  <p
-                    className={` ${
-                      product.availabilityStatus === "In Stock"
-                        ? "bg-green-600"
-                        : "bg-yellow-600"
-                    } text-white rounded w-fit p-0.5 mb-3`}
-                  >
-                    {product.availabilityStatus}
-                  </p>
-                  <p>
-                    {product.availabilityStatus == "Low Stock"
-                      ? `Hurry! Only ${product.stock} left in stock.`
-                      : product.availabilityStatus == "Out of Stock"
-                      ? "Currently unavailable."
-                      : ""}
-                  </p>
-                </div>
+                <StockStatus
+                  status={product.availabilityStatus}
+                  stock={product.stock}
+                />
                 <div>
                   <p className="text-gray-500 italic mb-2">
                     {product.category}
                   </p>
-                  <p className="text-gray-700 mb-6">
-                    Rating:
-                    <span className="font-semibold flex items-center">
-                      {Array.from({ length: 5 }, (_, i) =>
-                        i < Math.round(product.rating || 0) ? (
-                          <StarFilled
-                            style={{ color: "#DE7921" }}
-                            key={i}
-                            className="text-yellow-500 text-lg"
-                          />
-                        ) : (
-                          <StarOutlined
-                            key={i}
-                            className="text-gray-400 text-lg"
-                          />
-                        )
-                      )}
-                      <span className="ml-1 font-normal text-xs items-center">
-                        {product.rating}
-                      </span>
-                    </span>
-                    {/* <span>{product.reviews?.[0].comment}</span>
+                  <RatingStars rating={product.rating} />
+                  {/* <span>{product.reviews?.[0].comment}</span>
                   <span>{product.reviews?.[1].comment}</span>
                   <span>{product.reviews?.[2].comment}</span> */}
-                  </p>
                 </div>
                 <p className="text-gray-700 mb-6"></p>
                 <p className="text-gray-700 mb-6 max-w-xl">

@@ -5,6 +5,7 @@ import { removeFromCart, updateQuantity } from "../featues/cart/cartSlice";
 import { useApp } from "../context/AppContext";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../app/store";
+import QuantityBtn from "../components/QuantityBtn";
 
 const { Content } = Layout;
 
@@ -38,7 +39,7 @@ const Cart: React.FC = () => {
                 <h2>{item.title}</h2>
                 <h2>Price: {usdToInr(item.price)}</h2>
                 <h2>Total: {usdToInr(item.price * item.quantity)}</h2>
-                <div className="flex items-center border rounded">
+                {/* <div className="flex items-center border rounded">
                   <button
                     className="px-3 py-1 text-lg font-bold"
                     onClick={() => UpdateQuantity(item, item.quantity - 1)}
@@ -52,7 +53,11 @@ const Cart: React.FC = () => {
                   >
                     +
                   </button>
-                </div>
+                </div> */}
+                <QuantityBtn
+                  value={item.quantity}
+                  onChange={(newQty) => UpdateQuantity(item, newQty)}
+                />
                 <Button
                   type="primary"
                   onClick={() => {
